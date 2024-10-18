@@ -68,7 +68,22 @@ def update_font_size_in_blockquote(file_path, new_value):
     else:
         print("No matching blockquote font-size found.")
 
-
+def insert_icon_link_tag_if_absent(file_path):
+    # 读取原始 HTML 文件内容
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+    # 定义要插入的 link 标签
+    link_tag = '<link rel="icon" href="images/my_icon.png" sizes="96x96" type="image/png">'
+    # 检查是否已经存在该 link 标签
+    if link_tag not in content:
+        # 查找 <head> 标签，并在其后插入 <link> 标签
+        new_content = content.replace('<head>', f'<head>\n    {link_tag}')
+        # 将修改后的内容写回文件
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(new_content)
+        print(f'Link tag inserted successfully in {file_path}')
+    else:
+        print('Link tag already exists, no changes made.')
 
 # 指定html文件路径
 file_path = 'index.html'
@@ -81,3 +96,5 @@ update_max_width_in_media_body(file_path, max_width)
 update_padding_in_body(file_path, padding)
 # 调用函数，修改 font-size 为 1em
 update_font_size_in_blockquote(file_path, f'{font_size_quote}em')
+# insert icon link tag
+insert_icon_link_tag_if_absent(file_path)
